@@ -69,4 +69,9 @@ model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 
 model.fit(X, Y, batch_size=128, epochs=50)
 
-print(generate_text(1500, 0.2))
+generatedText = generate_text(1500, 0.2)
+
+with open('result/gen.txt', 'w', encoding='utf-8') as f:
+  f.write(generatedText)
+
+print("Generated text saved to file")
