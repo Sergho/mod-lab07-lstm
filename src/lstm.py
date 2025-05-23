@@ -7,6 +7,8 @@ from keras.layers import LSTM
  
 from keras.optimizers import RMSprop
 
+from tqdm import tqdm
+
 def sample_index(preds, temperature = 1.0):
     preds = np.asarray(preds).astype('float64')
     preds = np.log(preds) / temperature
@@ -20,7 +22,7 @@ def generate_text(length, diversity):
   generated = ''
   sentence = words[startIndex: startIndex + maxChainLength]
   generated = sentence.copy()
-  for i in range(length):
+  for i in tqdm(range(length), desc="Text generation", ncols=80):
     xPred = np.zeros((1, maxChainLength, len(vocabulary)))
     for t, word in enumerate(sentence):
       xPred[0, t, wordToIndices[word]] = 1.
@@ -67,4 +69,4 @@ model.compile(loss='categorical_crossentropy', optimizer=optimizer)
 
 model.fit(X, Y, batch_size=128, epochs=50)
 
-print(generate_text(500, 0.2))
+print(generate_text(1500, 0.2))
